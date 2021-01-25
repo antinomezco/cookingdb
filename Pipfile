@@ -1,0 +1,24 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+asgiref = "==3.3.1"
+django-cors-headers = "==3.5.0"
+djangorestframework = "==3.12.2"
+gunicorn = "==20.0.4"
+psycopg2 = "==2.8.6"
+pytz = "==2020.4"
+sqlparse = "==0.4.1"
+Django = "==3.1.3"
+django-heroku = "*"
+django-admin-autocomplete-filter = "*"
+django-extensions = "*"
+django-fractions = "*"
+django-environ = "*"
+
+[requires]
+python_version = "3.8"
