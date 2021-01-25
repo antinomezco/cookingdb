@@ -1,0 +1,1 @@
+web: gunicorn cookingdb.wsgi
