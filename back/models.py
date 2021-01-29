@@ -41,7 +41,7 @@ class User(models.Model):
 
 class Recipe(models.Model):
     recipe_name = models.CharField(max_length=50,blank=False, default='')
-    image = models.CharField(max_length=150,blank=False, default='')
+    image = models.CharField(max_length=500,blank=False, default='')
     prep_time = models.CharField(max_length=40, blank=False, default='')
     cook_time = models.CharField(max_length=40, blank=False, default='')
     servings = models.CharField(max_length=3, blank=False, default='')
