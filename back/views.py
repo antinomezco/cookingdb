@@ -19,9 +19,9 @@ class RecipesFilterView(ListAPIView):
         # if q_recipe_id:
         #     return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(q_recipe_id__exact=q_recipe_id)
         # #region = self.request.query_params.get('region', "")
-        # category = self.request.query_params.get('category', "")
+        approval = self.request.query_params.get('approval', "")
         # sortBy = self.request.query_params.get('sortBy', "")
-        return Recipe.objects.filter(recipe_name__icontains=recipe_name)#.filter(q_recipe_id__exact=q_recipe_id)#.filter(category__icontains=category).order_by(sortBy).reverse()
+        return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(approval__exact=True)#.filter(category__icontains=category).order_by(sortBy).reverse()
 
 # class OneRecipeView(ListAPIView):
 #     serializer_class = OneRecipeSerializer

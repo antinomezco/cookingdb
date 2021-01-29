@@ -45,7 +45,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ['course', 'food_category', 'cuisine', 'recipe_name', 'slug', 'user', 'image']
+        fields = ['course', 'food_category', 'cuisine', 'recipe_name', 'slug', 'user', 'image', 'approval']
         depth = 1
 
 # class Recipe_stepsSerializer(serializers.ModelSerializer):
