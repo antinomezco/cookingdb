@@ -18,10 +18,11 @@ class RecipesFilterView(ListAPIView):
         # q_recipe_id = self.request.query_params.get('q_recipe_id', "")#"0")
         # if q_recipe_id:
         #     return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(q_recipe_id__exact=q_recipe_id)
-        # #region = self.request.query_params.get('region', "")
+        cuisine_name = self.request.query_params.get('cuisine_name', "")
+        course_name = self.request.query_params.get('course_name', "")
         approval = self.request.query_params.get('approval', "")
-        # sortBy = self.request.query_params.get('sortBy', "")
-        return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(approval__exact=True)#.filter(category__icontains=category).order_by(sortBy).reverse()
+        sub = self.request.query_params.get('sub', "")
+        return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(cuisine__cuisine_name__icontains=cuisine_name).filter(course__course_name__icontains=course_name).filter(approval__exact=True).filter(user__sub__icontains=sub)#.order_by(sortBy).reverse()
 
 # class OneRecipeView(ListAPIView):
 #     serializer_class = OneRecipeSerializer
@@ -34,7 +35,7 @@ class RecipesFilterView(ListAPIView):
 #         # category = self.request.query_params.get('category', "")
 #         # sortBy = self.request.query_params.get('sortBy', "")
 #         return Recipe.objects.filter(slug__exact=slug)#.filter(city__icontains=city).filter(category__icontains=category).order_by(sortBy).reverse()
-@api_view(['GET', 'DELETE'])
+@api_view(['GET'])
 def recipe_view(request, slug):
     try: 
         recipe = Recipe.objects.get(slug=slug) 
@@ -65,6 +66,12 @@ class CuisineView(ListAPIView):
 
     def get_queryset(self):
         return Cuisine.objects.order_by('cuisine_name').all()
+
+class UserView(ListAPIView):
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.order_by('username').all()
 
 class FoodCategoryView(ListAPIView):
     serializer_class = FoodCategorySerializer
