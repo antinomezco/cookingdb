@@ -22,7 +22,8 @@ class RecipesFilterView(ListAPIView):
         course_name = self.request.query_params.get('course_name', "")
         approval = self.request.query_params.get('approval', "")
         sub = self.request.query_params.get('sub', "")
-        return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(cuisine__cuisine_name__icontains=cuisine_name).filter(course__course_name__icontains=course_name).filter(approval__exact=True).filter(user__sub__icontains=sub)#.order_by(sortBy).reverse()
+        sortBy = self.request.query_params.get('sortBy', "")
+        return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(cuisine__cuisine_name__icontains=cuisine_name).filter(course__course_name__icontains=course_name).filter(approval__exact=True).filter(user__sub__icontains=sub).order_by(sortBy).reverse()
 
 # class OneRecipeView(ListAPIView):
 #     serializer_class = OneRecipeSerializer
