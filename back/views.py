@@ -7,6 +7,7 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
+from django.contrib.postgres.search import SearchVector
 
 # Create your views here.
 class RecipesFilterView(ListAPIView):
@@ -18,11 +19,12 @@ class RecipesFilterView(ListAPIView):
         # q_recipe_id = self.request.query_params.get('q_recipe_id', "")#"0")
         # if q_recipe_id:
         #     return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(q_recipe_id__exact=q_recipe_id)
-        cuisine_name = self.request.query_params.get('cuisine_name', "")
-        course_name = self.request.query_params.get('course_name', "")
-        approval = self.request.query_params.get('approval', "")
-        sub = self.request.query_params.get('sub', "")
-        return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(cuisine__cuisine_name__icontains=cuisine_name).filter(course__course_name__icontains=course_name).filter(approval__exact=True).filter(user__sub__icontains=sub)#.order_by(sortBy).reverse()
+        # cuisine_name = self.request.query_params.get('cuisine_name', "")
+        # course_name = self.request.query_params.get('course_name', "")
+        # approval = self.request.query_params.get('approval', "")
+        # sub = self.request.query_params.get('sub', "") 
+        return Recipe.objects.annotate(search=SearchVector( 'recipe_name', 'ingredients_text', 'course__course_name')).filter(search__icontains=recipe_name) # 
+        # return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(cuisine__cuisine_name__icontains=cuisine_name).filter(course__course_name__icontains=course_name).filter(approval__exact=True).filter(user__sub__icontains=sub)#.order_by(sortBy).reverse()
 
 # class OneRecipeView(ListAPIView):
 #     serializer_class = OneRecipeSerializer
@@ -55,29 +57,29 @@ def recipe_view(request, slug):
     #     return JsonResponse(one_recipe_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CourseView(ListAPIView):
-    serializer_class = CourseSerializer
+# class CourseView(ListAPIView):
+#     serializer_class = CourseSerializer
 
-    def get_queryset(self):
-        return Course.objects.order_by('course_name').all()
+#     def get_queryset(self):
+#         return Course.objects.order_by('course_name').all()
 
-class CuisineView(ListAPIView):
-    serializer_class = CuisineSerializer
+# class CuisineView(ListAPIView):
+#     serializer_class = CuisineSerializer
 
-    def get_queryset(self):
-        return Cuisine.objects.order_by('cuisine_name').all()
+#     def get_queryset(self):
+#         return Cuisine.objects.order_by('cuisine_name').all()
 
-class UserView(ListAPIView):
-    serializer_class = UserSerializer
+# class UserView(ListAPIView):
+#     serializer_class = UserSerializer
 
-    def get_queryset(self):
-        return User.objects.order_by('username').all()
+#     def get_queryset(self):
+#         return User.objects.order_by('username').all()
 
-class FoodCategoryView(ListAPIView):
-    serializer_class = FoodCategorySerializer
+# class FoodCategoryView(ListAPIView):
+#     serializer_class = FoodCategorySerializer
 
-    def get_queryset(self):
-        return Food_category.objects.order_by('food_category_name').all()
+#     def get_queryset(self):
+#         return Food_category.objects.order_by('food_category_name').all()
 
 # class IngredientsView(ListAPIView):
 #     serializer_class = IngredientsSerializer
