@@ -2,5 +2,9 @@
   "python.linting.pylintEnabled": true,
   "python.linting.enabled": true,
   "python.pythonPath": "C:\\Users\\const\\.virtualenvs\\cookingdb-BtTprxsV\\Scripts\\python.exe",
-  "python.analysis.extraPaths": ["django"]
+  "python.analysis.extraPaths": ["django"],
+  "python.linting.pylintArgs": [
+    "--load-plugins=pylint_django",
+    "--errors-only" 
+  ]
 }

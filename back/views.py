@@ -11,12 +11,19 @@ from django.contrib.postgres.search import SearchVector
 
 # Create your views here.
 class RecipesFilterView(ListAPIView):
+    """
+    Database request lists all objects in model by default or items that match the search query if there are any.
+
+    Returns:
+        Recipe object
+
+    """
     serializer_class = RecipeSerializer
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         recipe_name = self.request.query_params.get('recipe_name', "")
-        return Recipe.objects.annotate(search=SearchVector( 'recipe_name', 'ingredients_text', 'course__course_name')).filter(search__icontains=recipe_name) # 
+        return Recipe.objects.annotate(search=SearchVector( 'recipe_name', 'ingredients_text', 'course__course_name')).filter(search__icontains=recipe_name)
 
 @api_view(['GET'])
 def recipe_view(request, slug):
