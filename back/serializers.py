@@ -26,33 +26,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
-# class IngredientsSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Ingredients
-#         fields = '__all__'
-
-# class QuantitySerializer(serializers.ModelSerializer):
-#     q_recipe_id = serializers.StringRelatedField(many=True)
-
-#     class Meta:
-#         model = Quantity
-#         fields = '__all__'
-#         depth = 1
-
 class RecipeSerializer(serializers.ModelSerializer):
-    # q_ing_recipe_id = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Recipe
         fields = ['course', 'food_category', 'cuisine', 'recipe_name', 'slug', 'user', 'image', 'approval', 'ingredients_text']
         depth = 1
-
-# class Recipe_stepsSerializer(serializers.ModelSerializer):
-
-#     class Meta:
-#         model = Recipe_steps
-#         fields = '__all__'
 
 class RelatedFieldAlternative(serializers.PrimaryKeyRelatedField):
     def __init__(self, **kwargs):
@@ -75,19 +54,8 @@ class OneRecipeSerializer(serializers.ModelSerializer):
     course = RelatedFieldAlternative(queryset=Course.objects.all(), serializer=CourseSerializer)
     food_category = RelatedFieldAlternative(queryset=Food_category.objects.all(), serializer=FoodCategorySerializer)
     user = RelatedFieldAlternative(queryset=User.objects.all(), serializer=UserSerializer)
-    # user = RelatedFieldAlternative(queryset=User.objects.all(), serializer=UserSerializer)
-    # cuisine = CuisineSerializer()
-    # course = CourseSerializer()
-    # food_category = FoodCategorySerializer()
 
     class Meta:
         model = Recipe
         fields = '__all__'
         depth = 1
-
-    # def create(self, validated_data):
-    #     course = validated_data.pop('course')
-    #     food_category = validated_data.pop('food_category')
-    #     cuisine = validated_data.pop('cuisine')
-    #     recipe = Recipe.objects.create(course=course['course_name'], food_category=food_category, cuisine=cuisine, **validated_data)
-    #     return recipe(**validated_data)

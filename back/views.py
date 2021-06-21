@@ -1,5 +1,5 @@
-from .models import Course, Food_category, Recipe, Cuisine, User#, Ingredients, Measurements, Quantity, Recipe_steps
-from .serializers import RecipeSerializer, OneRecipeSerializer, CourseSerializer, CuisineSerializer, FoodCategorySerializer, OneRecipeSerializer, UserSerializer#, IngredientsSerializer
+from .models import Recipe, User
+from .serializers import RecipeSerializer, OneRecipeSerializer, OneRecipeSerializer, UserSerializer
 from rest_framework.generics import ListAPIView
 from .pagination import StandardResultsSetPagination
 # function
@@ -16,27 +16,8 @@ class RecipesFilterView(ListAPIView):
 
     def get_queryset(self):
         recipe_name = self.request.query_params.get('recipe_name', "")
-        # q_recipe_id = self.request.query_params.get('q_recipe_id', "")#"0")
-        # if q_recipe_id:
-        #     return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(q_recipe_id__exact=q_recipe_id)
-        # cuisine_name = self.request.query_params.get('cuisine_name', "")
-        # course_name = self.request.query_params.get('course_name', "")
-        # approval = self.request.query_params.get('approval', "")
-        # sub = self.request.query_params.get('sub', "") 
         return Recipe.objects.annotate(search=SearchVector( 'recipe_name', 'ingredients_text', 'course__course_name')).filter(search__icontains=recipe_name) # 
-        # return Recipe.objects.filter(recipe_name__icontains=recipe_name).filter(cuisine__cuisine_name__icontains=cuisine_name).filter(course__course_name__icontains=course_name).filter(approval__exact=True).filter(user__sub__icontains=sub)#.order_by(sortBy).reverse()
 
-# class OneRecipeView(ListAPIView):
-#     serializer_class = OneRecipeSerializer
-#     # pagination_class = StandardResultsSetPagination
-
-#     def get_queryset(self):
-#         slug= self.kwargs['slug']
-#         # city = self.request.query_params.get('city', "")
-#         # #region = self.request.query_params.get('region', "")
-#         # category = self.request.query_params.get('category', "")
-#         # sortBy = self.request.query_params.get('sortBy', "")
-#         return Recipe.objects.filter(slug__exact=slug)#.filter(city__icontains=city).filter(category__icontains=category).order_by(sortBy).reverse()
 @api_view(['GET'])
 def recipe_view(request, slug):
     try: 
@@ -47,51 +28,9 @@ def recipe_view(request, slug):
     if request.method == 'GET': 
         one_recipe_serializer = OneRecipeSerializer(recipe) 
         return JsonResponse(one_recipe_serializer.data)
-    
-    # elif request.method == 'PUT':
-    #     one_recipe_data = JSONParser().parse(request)
-    #     one_recipe_serializer = OneRecipeSerializer(recipe, data=one_recipe_data)
-    #     if one_recipe_serializer.is_valid():
-    #         one_recipe_serializer.save()
-    #         return JsonResponse(one_recipe_serializer.data) 
-    #     return JsonResponse(one_recipe_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# class CourseView(ListAPIView):
-#     serializer_class = CourseSerializer
-
-#     def get_queryset(self):
-#         return Course.objects.order_by('course_name').all()
-
-# class CuisineView(ListAPIView):
-#     serializer_class = CuisineSerializer
-
-#     def get_queryset(self):
-#         return Cuisine.objects.order_by('cuisine_name').all()
-
-# class UserView(ListAPIView):
-#     serializer_class = UserSerializer
-
-#     def get_queryset(self):
-#         return User.objects.order_by('username').all()
-
-# class FoodCategoryView(ListAPIView):
-#     serializer_class = FoodCategorySerializer
-
-#     def get_queryset(self):
-#         return Food_category.objects.order_by('food_category_name').all()
-
-# class IngredientsView(ListAPIView):
-#     serializer_class = IngredientsSerializer
-
-#     def get_queryset(self):
-#         return Ingredients.objects.order_by('ingredient_name').all()
 @api_view(['POST'])
 def add_recipe_view(request):
-    # if request.method == 'GET':
-    #     cuisine = Cuisine.objects.all()
-    #     cuisine_serializer = CuisineSerializer(cuisine, many=True)
-    #     return JsonResponse(cuisine_serializer.data, safe=False)
     if request.method == 'POST':
         one_recipe_data = JSONParser().parse(request)
         one_recipe_serializer = OneRecipeSerializer(data=one_recipe_data)

@@ -48,8 +48,7 @@ INSTALLED_APPS = [
     'back',
     'admin_auto_filters',
     'django_extensions',
-    'rest_framework',
-    'djfractions'
+    'rest_framework', 
 ]
 
 MIDDLEWARE = [
