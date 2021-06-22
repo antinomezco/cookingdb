@@ -12,11 +12,7 @@ from django.contrib.postgres.search import SearchVector
 # Create your views here.
 class RecipesFilterView(ListAPIView):
     """
-    Database request lists all objects in model by default or items that match the search query if there are any.
-
-    Returns:
-        Recipe object
-
+    Return a list of all the existing recipes plus its course, food_category and cuisine Foreign Keys.
     """
     serializer_class = RecipeSerializer
     pagination_class = StandardResultsSetPagination
@@ -27,6 +23,9 @@ class RecipesFilterView(ListAPIView):
 
 @api_view(['GET'])
 def recipe_view(request, slug):
+    """
+    Return single recipe plus its course, food_category and cuisine Foreign Keys.
+    """
     try: 
         recipe = Recipe.objects.get(slug=slug) 
     except Recipe.DoesNotExist: 
@@ -38,6 +37,9 @@ def recipe_view(request, slug):
 
 @api_view(['POST'])
 def add_recipe_view(request):
+    """
+    Post a single recipe plus its course, food_category and cuisine Foreign Keys.
+    """
     if request.method == 'POST':
         one_recipe_data = JSONParser().parse(request)
         one_recipe_serializer = OneRecipeSerializer(data=one_recipe_data)
@@ -48,6 +50,16 @@ def add_recipe_view(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def edit_recipe_view(request, slug):
+    """
+    GET:
+    Return a single recipe plus its course, food_category and cuisine Foreign Keys.
+
+    PUT:
+    Edit a single recipe plus its course, food_category and cuisine Foreign Keys.
+
+    DELETE: 
+    Delete a single recipe plus its course, food_category and cuisine Foreign Keys.
+    """
     try: 
         recipe = Recipe.objects.get(slug=slug) 
     except Recipe.DoesNotExist: 
@@ -71,7 +83,9 @@ def edit_recipe_view(request, slug):
 
 @api_view(['POST'])
 def add_user_view(request): 
-    
+    """
+    Post a single user.
+    """
     if request.method == 'POST':
         user_data = JSONParser().parse(request)
         user_serializer = UserSerializer(data=user_data)
@@ -82,6 +96,13 @@ def add_user_view(request):
 
 @api_view(['GET', 'PUT'])
 def edit_user_view(request, sub): 
+    """
+    GET:
+    Post a single user's details.
+
+    PUT:
+    EDit a single user's details
+    """
     try: 
         user = User.objects.get(sub=sub) 
     except Recipe.DoesNotExist: 
