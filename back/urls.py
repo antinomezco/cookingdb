@@ -1,12 +1,13 @@
-#class
+# class
 from django.urls import path
 from .views import RecipesFilterView
-#function
+# function
 from django.conf.urls import url
-from back import views 
+from back import views
 
 urlpatterns = [
-    path('filterrecipes/', RecipesFilterView.as_view(), name='filter_recipes_view'),
+    path('filterrecipes/', RecipesFilterView.as_view(),
+         name='filter_recipes_view'),
     url('edit/recipe/(?P<slug>.+)/', views.edit_recipe_view),
     url('recipe/(?P<slug>.+)', views.recipe_view),
     url('add_recipe/', views.add_recipe_view),

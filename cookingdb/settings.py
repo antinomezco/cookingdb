@@ -66,6 +66,7 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
     'https://agitated-hermann-0d809c.netlify.app/',
     'https://cookingnuxt.herokuapp.com/',
+    'http://localhost:8080'
     )
 
 ROOT_URLCONF = 'cookingdb.urls'
