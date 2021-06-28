@@ -1,5 +1,5 @@
-from .models import Recipe, User
-from .serializers import RecipeSerializer, OneRecipeSerializer, OneRecipeSerializer, UserSerializer
+from .models import Course, Food_category, Recipe, Cuisine, User
+from .serializers import RecipeSerializer, OneRecipeSerializer, CourseSerializer, CuisineSerializer, FoodCategorySerializer, OneRecipeSerializer, UserSerializer
 from rest_framework.generics import ListAPIView
 from .pagination import StandardResultsSetPagination
 # function
@@ -140,3 +140,47 @@ def edit_user_view(request, sub):
             return JsonResponse(user_serializer.data)
         return JsonResponse(user_serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
+
+
+class CourseView(ListAPIView):
+    """
+    GET:
+    Return all courses.
+    """
+    serializer_class = CourseSerializer
+
+    def get_queryset(self):
+        return Course.objects.order_by('course_name').all()
+
+
+class CuisineView(ListAPIView):
+    """
+    GET:
+    Return all cuisines.
+    """
+    serializer_class = CuisineSerializer
+
+    def get_queryset(self):
+        return Cuisine.objects.order_by('cuisine_name').all()
+
+
+class UserView(ListAPIView):
+    """
+    GET:
+    Return all usernames.
+    """
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        return User.objects.order_by('username').all()
+
+
+class FoodCategoryView(ListAPIView):
+    """
+    GET:
+    Return all food categories.
+    """
+    serializer_class = FoodCategorySerializer
+
+    def get_queryset(self):
+        return Food_category.objects.order_by('food_category_name').all()

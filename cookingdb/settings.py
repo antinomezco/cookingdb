@@ -66,7 +66,8 @@ MIDDLEWARE = [
 CORS_ORIGIN_WHITELIST = (
     'https://agitated-hermann-0d809c.netlify.app/',
     'https://cookingnuxt.herokuapp.com/',
-    'http://localhost:8080'
+    'http://localhost:8080/'
+    'http://127.0.0.1:8080/'
     )
 
 ROOT_URLCONF = 'cookingdb.urls'
@@ -149,3 +150,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 django_heroku.settings(locals())
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
