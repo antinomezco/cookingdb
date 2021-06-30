@@ -1,5 +1,5 @@
-from .models import Course, Food_category, Recipe, Cuisine, User
-from .serializers import RecipeSerializer, OneRecipeSerializer, CourseSerializer, CuisineSerializer, FoodCategorySerializer, OneRecipeSerializer, UserSerializer
+from .models import Course, Food_category, Recipe, Cuisine
+from .serializers import RecipeSerializer, OneRecipeSerializer, CourseSerializer, CuisineSerializer, FoodCategorySerializer, OneRecipeSerializer
 from rest_framework.generics import ListAPIView
 from .pagination import StandardResultsSetPagination
 # function
@@ -24,7 +24,7 @@ class RecipesFilterView(ListAPIView):
         recipe_name = self.request.query_params.get('recipe_name', "")
         return Recipe.objects.annotate(search=SearchVector(
             'recipe_name', 'ingredients_text', 'course__course_name'
-        )).filter(search__icontains=recipe_name)
+        )).filter(search__icontains=recipe_name).order_by('-created_at')
 
 
 @api_view(['GET'])
@@ -96,52 +96,6 @@ def edit_recipe_view(request, slug):
         return JsonResponse({'message': 'Recipe was deleted successfully!'},
                             status=status.HTTP_204_NO_CONTENT)
 
-
-@api_view(['POST'])
-def add_user_view(request):
-    """
-    Post a single user.
-    """
-    if request.method == 'POST':
-        user_data = JSONParser().parse(request)
-        user_serializer = UserSerializer(data=user_data)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            return JsonResponse(user_serializer.data,
-                                status=status.HTTP_201_CREATED)
-        return JsonResponse(user_serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
-
-
-@api_view(['GET', 'PUT'])
-def edit_user_view(request, sub):
-    """
-    GET:
-    Post a single user's details.
-
-    PUT:
-    EDit a single user's details
-    """
-    try:
-        user = User.objects.get(sub=sub)
-    except Recipe.DoesNotExist:
-        return JsonResponse({'message': 'This user does not exist'},
-                            status=status.HTTP_404_NOT_FOUND)
-
-    if request.method == 'GET':
-        user_serializer = UserSerializer(user)
-        return JsonResponse(user_serializer.data)
-
-    elif request.method == 'PUT':
-        user_data = JSONParser().parse(request)
-        user_serializer = UserSerializer(user, data=user_data)
-        if user_serializer.is_valid():
-            user_serializer.save()
-            return JsonResponse(user_serializer.data)
-        return JsonResponse(user_serializer.errors,
-                            status=status.HTTP_400_BAD_REQUEST)
-
-
 class CourseView(ListAPIView):
     """
     GET:
@@ -162,17 +116,6 @@ class CuisineView(ListAPIView):
 
     def get_queryset(self):
         return Cuisine.objects.order_by('cuisine_name').all()
-
-
-class UserView(ListAPIView):
-    """
-    GET:
-    Return all usernames.
-    """
-    serializer_class = UserSerializer
-
-    def get_queryset(self):
-        return User.objects.order_by('username').all()
 
 
 class FoodCategoryView(ListAPIView):

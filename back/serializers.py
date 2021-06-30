@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Course, Food_category, Cuisine, Recipe, User
+from .models import Course, Food_category, Cuisine, Recipe
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -23,19 +23,12 @@ class CuisineSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = User
-        fields = '__all__'
-
-
 class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
         fields = ['course', 'food_category', 'cuisine', 'recipe_name', 'slug',
-                  'user', 'image', 'approval', 'ingredients_text']
+                  'image', 'approval', 'ingredients_text', 'created_at']
         depth = 1
 
 
@@ -64,8 +57,6 @@ class OneRecipeSerializer(serializers.ModelSerializer):
         queryset=Course.objects.all(), serializer=CourseSerializer)
     food_category = RelatedFieldAlternative(
         queryset=Food_category.objects.all(), serializer=FoodCategorySerializer)
-    user = RelatedFieldAlternative(
-        queryset=User.objects.all(), serializer=UserSerializer)
 
     class Meta:
         model = Recipe
