@@ -23,7 +23,7 @@ class Cuisine(models.Model):
 
 class Recipe(models.Model):
     recipe_name = models.CharField(max_length=50,blank=False, default='')
-    image = models.CharField(max_length=2000,blank=False, default='')
+    image = models.TextField(blank=False, default='')
     prep_time = models.CharField(max_length=40, blank=False, default='')
     cook_time = models.CharField(max_length=40, blank=False, default='')
     servings = models.CharField(max_length=3, blank=False, default='')
